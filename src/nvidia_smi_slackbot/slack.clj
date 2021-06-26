@@ -1,8 +1,17 @@
 (ns nvidia-smi-slackbot.slack
   (:require [clojure.java.io :as io]
             [org.httpkit.client :as http]
-            [cheshire.core]))
+            [cheshire.core]
+            [clojure.java.shell :as shell]
+            [clojure.string :as str]))
 
+(defn hostname []
+  (try
+    (-> (shell/sh "hostname") (:out) (str/trim))
+    (catch Exception _e
+      (try
+        (str/trim (slurp "/etc/hostname"))
+        (catch Exception _e)))))
 
 (def config (read-string (slurp (io/resource "config.clj"))))
 
@@ -17,7 +26,7 @@
   [processes]
   {:attachments [{:fallback "The server's GPU is curently BUSY"
                   :color    "danger"
-                  :fields   (apply vector {:title "Busy"
+                  :fields   (apply vector {:title (format "Busy %s" (hostname))
                                            :value ""}
                                    (map format-process processes))}]})
 
@@ -25,7 +34,7 @@
 (def free-msg
   {:attachments [{:fallback "The server's GPU is curently FREE"
                   :color    "good"
-                  :fields   [{:title "Free"
+                  :fields   [{:title (format "Free %s" (hostname))
                               :value "The GPU is currently free."}]}]})
 
 

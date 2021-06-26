@@ -6,7 +6,9 @@ Developed based on [this repo](https://github.com/gariepyalex/nvidia-smi-slackbo
 
 ## Dependency
 [Java](https://openjdk.java.net/install/)
+
 [Clojure](https://clojure.org/guides/getting_started)
+
 [Leiningen](https://leiningen.org/#install)
 
 ## Slack Setting
@@ -18,3 +20,10 @@ Follow the instruction for [sending messages using incoming webhooks](https://ap
 3. Edit `resources/config.clj` with the URL of your own slack webhook.
 4. `lein run`
 5. Keep this program running then you will receive notifications in Slack.
+
+# To-Do
+[x] Show names of the machine
+
+[ ] Memory usage / Total memory
+
+[ ] GPU-Util
